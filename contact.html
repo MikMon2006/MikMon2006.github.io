@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form</title>
+    <link rel="stylesheet" href="Assets/Styles/style.css">
+    <link rel="stylesheet" href="Assets/Styles/grid.css">
+</head>
+
+<body class="container">
+    <link href='https://fonts.googleapis.com/css?family=Alice' rel='stylesheet'>
+    <div class="row">
+        <img class= "image" src="Assets/Images/LogoBB.png" alt="Logo">
+        <ul  class="col">
+            <li><a class="button" href="home.html">Home</a></li>
+            <li><a class="active" href="about.html">About</a></li>
+            <li><a class="button" href="blog.html">Blog</a></li>
+            <li><a class="button" href="favourites.html">Favourites</a></li>
+            <li><a class="button" href="quizzes.html">Quizzes</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <a class="buttonx" href="contact.html">Contact Form</a> 
+        </div>
+    </div>
+    
+    <form action="mailto:info@BeautyBloom.com" method="post" enctype="text/plain" class="contact-form">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1>Contact Us</h1>
+                </div>
+                <div class="col-12">
+                    <h4>If a brand is not listed on my blog, please use the contact form so I would review what you need to be reviewed! Also state your own comments on products I reviewed!</h4>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-4">
+                    <label for="email-address-input">Email:</label>
+                    <input type="text" id="email-address-input" name="email-address" placeholder="name.surname@gmail.com" required>
+                    
+                    <label for="subject-input">Subject:</label>
+                    <input type="text" id="subject-input" name="subject" placeholder="--enter subject here--" required>
+                </div>
+                
+                <div class="col-6">
+                    <label for="message-textarea">Comment:</label>
+                    <textarea name="message" id="message-textarea" placeholder="--enter comment here--" cols="20" rows="10" required></textarea>
+                    <button type="submit" class="button">Send</button>
+                    <button type="reset" class="button clear">Clear</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
