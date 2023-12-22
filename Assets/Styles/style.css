@@ -36,6 +36,13 @@ li a.button{
     background-color: #998bcc;
 }
 
+nav .row {
+    align-items: flex-start;
+}
+nav a {
+    display: block;
+}
+
 .buttonx{
     list-style-type: none;
     margin: 4px;
