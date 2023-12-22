@@ -7,7 +7,7 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    border: 3px solid #7E66BB;
+    border: 5px solid #7E66BB;
     background-color: #998bcc;
 }
 
@@ -47,7 +47,7 @@ nav a {
     list-style-type: none;
     margin: 4px;
     padding: .5rem .5rem;
-    border: 3px solid #7E66BB;
+    border: 5px solid #7E66BB;
     background-color: #998bcc;
     text-decoration: none;
     display: block;
