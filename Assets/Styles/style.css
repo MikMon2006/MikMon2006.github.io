@@ -11,6 +11,10 @@ ul {
     background-color: #998bcc;
 }
 
+ol{
+    list-style-type:lower-roman;
+}
+
 li {
     float: left;
 }
