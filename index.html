@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000080">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Media">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>My Media Catalog</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font:13px Tahoma,"MS Sans Serif",Geneva,sans-serif;background:linear-gradient(160deg,#7EC8E3,#c4eefa 50%,#7EC8E3) fixed;min-height:100vh;padding:max(10px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) calc(52px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));color:#000;-webkit-text-size-adjust:100%;overscroll-behavior-y:none}
+.win{background:#c0c0c0;border:2px solid;border-color:#fff #000 #000 #fff;box-shadow:inset -1px -1px #808080,inset 1px 1px #dfdfdf;padding:3px;max-width:1040px;margin:0 auto}
+.tb{background:linear-gradient(90deg,#000080,#008080);color:#fff;padding:2px 3px 2px 6px;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.tb b{font:22px VT323,monospace;letter-spacing:1px;font-weight:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb span{display:flex;gap:2px}.tb button{padding:0 6px;font:bold 12px Tahoma;min-width:22px}
+.btn,button{background:#c0c0c0;border:2px solid;border-color:#fff #000 #000 #fff;box-shadow:inset -1px -1px #808080,inset 1px 1px #dfdfdf;padding:3px 10px;font:inherit;color:#000;cursor:pointer}
+.btn:active,.on{border-color:#000 #fff #fff #000;box-shadow:inset 1px 1px #808080;background:#d8d8d8;font-weight:bold}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:1px dotted #000;outline-offset:-5px}
+input,select,textarea{font:inherit;background:#fff;border:2px solid;border-color:#808080 #fff #fff #808080;box-shadow:inset 1px 1px #000;padding:3px 4px;max-width:100%}
+.bar{display:flex;flex-wrap:wrap;gap:6px;padding:6px 3px}
+.tabs{display:flex;gap:2px;padding:4px 4px 0;flex-wrap:wrap}
+.tabs button{border-bottom:0;padding:5px 16px 4px;margin-bottom:-2px;position:relative;z-index:1;border-radius:3px 3px 0 0}
+.tabs button.on{padding-bottom:7px;background:#c0c0c0;box-shadow:none;border-color:#fff #000 #c0c0c0 #fff;text-decoration:underline}
+.panel{border:2px solid;border-color:#fff #000 #000 #fff;box-shadow:inset -1px -1px #808080;padding:10px;min-height:340px}
+.hero{font:46px/1 VT323,monospace;color:#000080;text-shadow:2px 2px #fff,3px 3px #008080;margin:0 0 4px;letter-spacing:2px}
+.lcd{background:#031a1a;color:#5dffb0;font:30px VT323,monospace;border:2px solid;border-color:#808080 #fff #fff #808080;padding:6px 10px;text-align:center}
+.lcd small{display:block;font-size:17px;color:#2bb37a}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:12px 0}
+.seg{height:16px;background:#fff;border:2px solid;border-color:#808080 #fff #fff #808080;padding:1px;margin:3px 0}
+.seg i{display:block;height:100%;background:repeating-linear-gradient(90deg,#000080 0 9px,transparent 9px 11px);transition:width .6s}
+.load i{animation:ld 1.4s steps(12) infinite}@keyframes ld{from{width:0}to{width:100%}}
+@media(prefers-reduced-motion:reduce){.load i{animation:none;width:60%}}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;background:#fff}
+th{background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;padding:3px 8px;text-align:left}
+td{padding:3px 8px;border-bottom:1px solid #c0c0c0}tr.bad td{color:#b00;text-decoration:line-through}
+.fb{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.fr{display:flex;flex-wrap:wrap;gap:3px;align-items:center}.fr>em{width:68px;font-style:normal;font-weight:bold}
+.fr button{padding:1px 8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px}
+.card{background:#c0c0c0;border:2px solid;border-color:#fff #000 #000 #fff;box-shadow:inset -1px -1px #808080;padding:6px;display:flex;flex-direction:column;gap:2px;overflow-wrap:anywhere}
+.cv{aspect-ratio:1;position:relative;background:repeating-radial-gradient(circle at 50% 50%,#101030 0 3px,#202050 3px 5px);display:grid;place-items:center;font-size:44px;border:2px solid;border-color:#808080 #fff #fff #808080;margin-bottom:4px}
+.cv.cd,.cv.dvd{background:radial-gradient(circle,#c0c0c0 0 12%,#9fe 13%,#c6f 45%,#6cf 70%,#ddd 71%)}
+.cv.cassette{background:#7a5a3a}
+.cv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card small{color:#333}.acts{display:flex;gap:3px;flex-wrap:wrap;margin-top:4px}.acts button{padding:1px 6px;font-size:12px}
+.note{background:#fff;border:2px solid;border-color:#808080 #fff #fff #808080;padding:6px;margin:8px 0;white-space:pre-wrap;font:16px/1.25 "Courier New",monospace}
+.note h4{margin:0 0 4px;font:bold 12px Tahoma;color:#000080}
+#modal{position:fixed;inset:0;background:rgba(0,0,64,.35);display:none;align-items:flex-start;justify-content:center;padding:20px 8px;overflow:auto;z-index:20}
+#modal .win{width:min(640px,100%)}
+.form{display:grid;grid-template-columns:110px 1fr;gap:6px 8px;align-items:center;padding:8px}
+.form label{text-align:right}.form input,.form select{width:100%}
+.pad{padding:8px}textarea{width:100%;font-family:"Courier New",monospace}
+.task{position:fixed;left:0;right:0;bottom:0;background:#c0c0c0;border-top:2px solid #fff;box-shadow:0 -1px #808080;padding:3px 3px calc(3px + env(safe-area-inset-bottom));display:flex;justify-content:space-between;z-index:10}
+.task .clk{border:2px solid;border-color:#808080 #fff #fff #808080;padding:3px 10px}
+.empty{padding:30px;text-align:center;color:#444}
+@media(pointer:coarse){.btn,button{min-height:36px}.fr button{min-height:32px}input,select,textarea{font-size:16px;min-height:36px}}
+@media(max-width:560px){.hero{font-size:34px}.form{grid-template-columns:1fr}.form label{text-align:left}.fr>em{width:100%}.tabs button{padding:5px 10px 4px}}
+.fbtn{display:none}
+@media(max-width:560px){
+body{padding:6px 6px calc(46px + env(safe-area-inset-bottom))}
+.tb b{font-size:19px}
+.bar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:5px 2px}.bar>*{flex:none}
+.tabs{flex-wrap:nowrap;padding:4px 2px 0}.tabs button{flex:1;padding:7px 2px 5px;font-size:12px}
+.panel{padding:8px 6px}
+.fbtn{display:inline-block}
+#chips{display:none}#chips.open{display:flex}
+.fr{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}.fr button{flex:none}.fr>em{width:auto;flex:none}
+.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.card{font-size:12px;padding:4px}.cv{font-size:34px}
+#modal{padding:0}#modal .win{width:100%;min-height:100%}
+.stats{grid-template-columns:repeat(2,1fr)}.lcd{font-size:26px}
+th,td{padding:3px 5px}
+}
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="tb"><b>My_Media_Catalog - Properties</b><span><button title="About" onclick="alert('My Media Catalog\nVinyl, CDs, DVDs & Cassettes.\nPublic to browse, owner-only to edit.')">?</button><button title="Nice try">X</button></span></div>
+  <div class="bar">
+    <button id="bAdd" data-act="add">+ Add Media</button>
+    <button id="bLog" data-act="login">Owner Login</button>
+    <button id="inst" data-act="install" style="display:none">Install App</button>
+    <button data-act="xj">Export JSON</button><button data-act="xc">Export CSV</button><button data-act="imp">Import...</button>
+    <input type="file" id="file" accept=".json,.csv,.txt" hidden>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <div class="panel">
+    <div id="home"></div>
+    <div id="cat" hidden>
+      <div class="fb"><div class="fr"><em>Search:</em><input id="q" type="search" placeholder="Search title or artist" style="flex:1;min-width:120px"><button class="fbtn" id="ftb" data-act="ft">Filters</button></div><div id="chips" class="fb"></div></div>
+      <div id="list"></div>
+    </div>
+    <div id="memos" hidden></div>
+  </div>
+</div>
+<div id="modal"></div>
+<div class="task"><button><b>Start</b></button><span class="clk" id="clk"></span></div>
+
+<script type="module">
+/* ====== 1. CONFIG: paste your Firebase values (Project settings > Your apps > Web app) ====== */
+const CFG = { apiKey:"PASTE_API_KEY", authDomain:"PASTE.firebaseapp.com", projectId:"PASTE_PROJECT_ID", appId:"PASTE_APP_ID" };
+const OWNER_EMAIL = "you@example.com"; // the one account allowed to edit
+/* ========================================================================================== */
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getFirestore,collection,onSnapshot,doc,setDoc,deleteDoc,writeBatch} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const demo = CFG.apiKey.startsWith("PASTE"); // no config yet: runs locally in this browser only
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today=()=>new Date().toISOString().slice(0,10);
+const FM={vinyl:'Vinyl',cd:'CD',dvd:'DVD',cassette:'Cassette'}, ICON={vinyl:'⚫',cd:'💿',dvd:'📀',cassette:'📼'};
+const DEF_GENRES=['Pop','Rock','Musicals','Soundtracks','Compilations'];
+const S={items:[],memos:[]}; let owner=false, tab='home', ready=false, db, auth, pending=[], logAll=false;
+const F={fmt:'all',genre:'all',at:'all',dec:'all',q:''};
+const uid=()=>crypto.randomUUID();
+const SEED=[{"id":"s001","title":"The Album","artist":"Barbie","format":"vinyl","size":"12","genre":"Pop, Musicals, Soundtracks, Compilations","artistType":"band,solo","year":2023,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s002","title":"The Score","artist":"Barbie","format":"vinyl","size":"12","genre":"Musicals, Soundtracks, Compilations","artistType":"band","year":2023,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s003","title":"Four","artist":"One Direction","format":"vinyl","size":"12","genre":"Pop","artistType":"band","year":2014,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s004","title":"Made in the A.M.","artist":"One Direction","format":"vinyl","size":"12","genre":"Pop","artistType":"band","year":2015,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s005","title":"Heartbreak Weather","artist":"Niall Horan","format":"vinyl","size":"12","genre":"Pop","artistType":"solo","year":2020,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s006","title":"The Show","artist":"Niall Horan","format":"vinyl","size":"12","genre":"Pop","artistType":"solo","year":2023,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s007","title":"The Show: The Encore","artist":"Niall Horan","format":"vinyl","size":"12","genre":"Pop, Compilations","artistType":"solo","year":2024,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s008","title":"Harry Styles","artist":"Harry Styles","format":"vinyl","size":"12","genre":"Pop","artistType":"solo","year":2017,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s009","title":"Fine Line","artist":"Harry Styles","format":"vinyl","size":"12","genre":"Pop","artistType":"solo","year":2019,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s010","title":"Harry's House","artist":"Harry Styles","format":"vinyl","size":"12","genre":"Pop","artistType":"solo","year":2022,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s011","title":"Walls","artist":"Louis Tomlinson","format":"vinyl","size":"12","genre":"Pop","artistType":"solo","year":2020,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s012","title":"Faith in the Future","artist":"Louis Tomlinson","format":"vinyl","size":"12","genre":"Pop","artistType":"solo","year":2022,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s013","title":"Unorthodox Jukebox","artist":"Bruno Mars","format":"vinyl","size":"12","genre":"Pop","artistType":"solo","year":2012,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s014","title":"The Rise and Fall of a Midwest Princess","artist":"Chappell Roan","format":"vinyl","size":"12","genre":"Pop","artistType":"solo","year":2023,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s015","title":"Rae","artist":"Ashe","format":"vinyl","size":"12","genre":"Pop, Rock","artistType":"solo","year":2022,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s016","title":"Lover","artist":"Taylor Swift","format":"vinyl","size":"12","genre":"Pop","artistType":"solo","year":2019,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s017","title":"Midnights","artist":"Taylor Swift","format":"vinyl","size":"12","genre":"Pop","artistType":"solo","year":2022,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s018","title":"...Baby One More Time","artist":"Britney Spears","format":"vinyl","size":"12","genre":"Pop","artistType":"solo","year":1999,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s019","title":"Oops!... I Did It Again","artist":"Britney Spears","format":"vinyl","size":"12","genre":"Pop","artistType":"solo","year":2000,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s020","title":"LO+ 2000","artist":"","format":"vinyl","size":"12","genre":"Pop, Rock, Compilations","artistType":"band,solo","year":2000,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s021","title":"Rumours","artist":"Fleetwood Mac","format":"vinyl","size":"12","genre":"Rock","artistType":"band","year":1977,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s022","title":"Greatest Hits","artist":"Fleetwood Mac","format":"vinyl","size":"12","genre":"Rock, Compilations","artistType":"band","year":1988,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s023","title":"Please Please Me","artist":"The Beatles","format":"vinyl","size":"12","genre":"Rock","artistType":"band","year":1963,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s024","title":"With the Beatles","artist":"The Beatles","format":"vinyl","size":"12","genre":"Rock","artistType":"band","year":1963,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s025","title":"A Hard Day's Night","artist":"The Beatles","format":"vinyl","size":"12","genre":"Rock","artistType":"band","year":1964,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s026","title":"Help!","artist":"The Beatles","format":"vinyl","size":"12","genre":"Rock","artistType":"band","year":1965,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s027","title":"Rubber Soul","artist":"The Beatles","format":"vinyl","size":"12","genre":"Rock","artistType":"band","year":1965,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s028","title":"Abbey Road","artist":"The Beatles","format":"vinyl","size":"12","genre":"Rock","artistType":"band","year":1969,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s029","title":"Pop Goes the Beatle","artist":"The Beatles","format":"vinyl","size":"12","genre":"Rock, Compilations","artistType":"band","year":1966,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s030","title":"Yeah! Yeah! USA!","artist":"The Beatles","format":"vinyl","size":"12","genre":"Rock, Compilations","artistType":"band","year":1966,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s031","title":"Live in Concert","artist":"The Beatles","format":"vinyl","size":"12","genre":"Rock, Compilations","artistType":"band","year":1977,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s032","title":"Gold","artist":"The Bangles","format":"vinyl","size":"12","genre":"Pop, Compilations","artistType":"band","year":1988,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s033","title":"The Hurting","artist":"Tears for Fears","format":"vinyl","size":"12","genre":"Pop, Rock","artistType":"band","year":1983,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s034","title":"Songs from the Big Chair","artist":"Tears for Fears","format":"vinyl","size":"12","genre":"Pop, Rock","artistType":"band","year":1985,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s035","title":"Never Gonna Give You Up Zoetrope","artist":"Rick Astley","format":"vinyl","size":"12","genre":"Pop, Compilations","artistType":"solo","year":1987,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s036","title":"Gold","artist":"ABBA","format":"vinyl","size":"12","genre":"Pop, Compilations","artistType":"band","year":1992,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s037","title":"Greatest Hits Vol. 2","artist":"ABBA","format":"vinyl","size":"12","genre":"Pop, Compilations","artistType":"band","year":1979,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s038","title":"Greatest Hits","artist":"Queen","format":"vinyl","size":"12","genre":"Rock, Compilations","artistType":"band","year":1981,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s039","title":"The Works in Concert","artist":"Queen","format":"vinyl","size":"12","genre":"Rock, Compilations","artistType":"band","year":1984,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s040","title":"A Kind of Magic","artist":"Queen","format":"vinyl","size":"12","genre":"Rock","artistType":"band","year":1986,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s041","title":"Big Hits","artist":"The Rolling Stones","format":"vinyl","size":"12","genre":"Rock, Compilations","artistType":"band","year":1966,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s042","title":"Nightflight to Venus","artist":"Boney M.","format":"vinyl","size":"12","genre":"Pop, Rock","artistType":"band","year":1978,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s043","title":"20 Original Hits","artist":"Little Richard","format":"vinyl","size":"12","genre":"Pop, Rock, Compilations","artistType":"solo","year":1957,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s044","title":"Christmas Album","artist":"Elvis Presley","format":"vinyl","size":"12","genre":"Pop","artistType":"solo","year":1957,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s045","title":"Sixties Mania","artist":"","format":"vinyl","size":"12","genre":"Pop, Rock, Compilations","artistType":"band,solo","year":1965,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s046","title":"The Woman in Red","artist":"","format":"vinyl","size":"12","genre":"Pop, Soundtracks","artistType":"","year":1984,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s047","title":"Schtonk","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1992,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s048","title":"Doctor Schiwago","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1965,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s049","title":"The Partridge Family","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"band","year":1970,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s050","title":"Kiss Me Kate","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1953,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s051","title":"Show Boat","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1951,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s052","title":"Starlight Express","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1984,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s053","title":"Can-Can","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1960,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s054","title":"South Pacific","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1958,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s055","title":"The Phantom of the Opera","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1986,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s056","title":"Jesus Christ Superstar","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1970,"dateAdded":"2023-12-12","cover":"","status":"owned"},{"id":"s057","title":"Grease","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1978,"dateAdded":"2023-12-30","cover":"","status":"owned"},{"id":"s058","title":"Oklahoma!","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1955,"dateAdded":"2023-12-30","cover":"","status":"owned"},{"id":"s059","title":"Èvita","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1976,"dateAdded":"2023-12-30","cover":"","status":"owned"},{"id":"s060","title":"Annie Get Your Gun","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1950,"dateAdded":"2023-12-30","cover":"","status":"owned"},{"id":"s061","title":"Haare","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1969,"dateAdded":"2023-12-30","cover":"","status":"owned"},{"id":"s062","title":"Haïr","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1968,"dateAdded":"2023-12-30","cover":"","status":"owned"},{"id":"s063","title":"The Rocky Horror Show","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1975,"dateAdded":"2024-01-09","cover":"","status":"owned"},{"id":"s064","title":"My Fair Lady","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1964,"dateAdded":"2024-04-15","cover":"","status":"owned"},{"id":"s065","title":"My Fair Lady (Broadway)","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1956,"dateAdded":"2024-04-15","cover":"","status":"owned"},{"id":"s066","title":"Moulin Rouge","artist":"","format":"vinyl","size":"12","genre":"Pop, Rock, Musicals, Soundtracks","artistType":"band,solo","year":2001,"dateAdded":"2024-04-15","cover":"","status":"owned"},{"id":"s067","title":"Singin' in the Rain","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1952,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s068","title":"Fiddler on the Roof","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1964,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s069","title":"Funny Girl","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1968,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s070","title":"Funny Girl (Broadway)","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1964,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s071","title":"The Sound of Music","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1965,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s072","title":"West Side Story (2021)","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":2021,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s073","title":"West Side Story (2021 Walmart Version)","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":2021,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s074","title":"West Side Story (1963)","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1961,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s075","title":"West Side Story (1963 Red)","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1961,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s076","title":"West Side Story (Leonard Bernstein)","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1985,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s077","title":"West Side Story (Broadway)","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":1957,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s078","title":"The Best of Broadway","artist":"The Ziegfield Theatre Orchestra","format":"vinyl","size":"12","genre":"Musicals, Soundtracks, Compilations","artistType":"band","year":1990,"dateAdded":"2025-01-04","cover":"","status":"owned"},{"id":"s079","title":"High School Musical 1","artist":"","format":"vinyl","size":"12","genre":"Pop, Musicals, Soundtracks","artistType":"","year":2006,"dateAdded":"2025-01-04","cover":"","status":"owned"},{"id":"s080","title":"High School Musical 2","artist":"","format":"vinyl","size":"12","genre":"Pop, Musicals, Soundtracks","artistType":"","year":2007,"dateAdded":"2025-01-04","cover":"","status":"owned"},{"id":"s081","title":"High School Musical 3","artist":"","format":"vinyl","size":"12","genre":"Pop, Musicals, Soundtracks","artistType":"","year":2008,"dateAdded":"2025-01-04","cover":"","status":"owned"},{"id":"s082","title":"Lemonade Mouth","artist":"","format":"vinyl","size":"12","genre":"Pop, Musicals, Soundtracks","artistType":"band","year":2011,"dateAdded":"2025-01-04","cover":"","status":"owned"},{"id":"s083","title":"Enchanted","artist":"","format":"vinyl","size":"12","genre":"Musicals, Soundtracks","artistType":"","year":2007,"dateAdded":"2025-01-04","cover":"","status":"owned"},{"id":"s084","title":"Heart Vinyl","artist":"The Beatles","format":"vinyl","size":"7","genre":"Other","artistType":"band","year":1963,"dateAdded":"2025-01-04","cover":"","status":"owned"},{"id":"s085","title":"Now and Then","artist":"The Beatles","format":"vinyl","size":"7","genre":"Other","artistType":"band","year":1977,"dateAdded":"2025-01-10","cover":"","status":"owned"},{"id":"s086","title":"I Have a Dream","artist":"ABBA","format":"vinyl","size":"7","genre":"Pop, Rock","artistType":"band","year":1979,"dateAdded":"2025-01-25","cover":"","status":"owned"},{"id":"s087","title":"S.O.S","artist":"ABBA","format":"vinyl","size":"7","genre":"Pop, Rock","artistType":"band","year":1975,"dateAdded":"2025-01-25","cover":"","status":"owned"},{"id":"s088","title":"The Shoop Shoop Song","artist":"Cher","format":"vinyl","size":"7","genre":"Pop, Rock","artistType":"solo","year":1991,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s089","title":"The Sign","artist":"Ace of Base","format":"vinyl","size":"7","genre":"Pop, Rock","artistType":"band","year":1993,"dateAdded":"2025-03-04","cover":"","status":"owned"},{"id":"s090","title":"Oh Susie","artist":"Secret Service","format":"vinyl","size":"7","genre":"Pop, Rock","artistType":"band","year":1982,"dateAdded":"2025-08-15","cover":"","status":"owned"},{"id":"s091","title":"Never Gonna Give You Up","artist":"Rick Astley","format":"vinyl","size":"7","genre":"Pop","artistType":"solo","year":1987,"dateAdded":"2025-08-15","cover":"","status":"owned"},{"id":"s092","title":"Careless Whisper","artist":"George Michael","format":"vinyl","size":"7","genre":"Pop","artistType":"solo","year":1984,"dateAdded":"2025-08-15","cover":"","status":"owned"},{"id":"s093","title":"What's Up","artist":"4 Non Blondes","format":"vinyl","size":"7","genre":"Pop, Rock","artistType":"band","year":1993,"dateAdded":"2025-10-06","cover":"","status":"owned"},{"id":"s094","title":"Funkytown","artist":"Lipps Inc.","format":"vinyl","size":"7","genre":"Pop","artistType":"band","year":1980,"dateAdded":"2025-10-20","cover":"","status":"owned"},{"id":"s095","title":"Up All Night","artist":"One Direction","format":"cd","size":"","genre":"Pop","artistType":"band","year":2011,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s096","title":"Take Me Home","artist":"One Direction","format":"cd","size":"","genre":"Pop","artistType":"band","year":2012,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s097","title":"Take Me Home (Deluxe)","artist":"One Direction","format":"cd","size":"","genre":"Pop","artistType":"band","year":2012,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s098","title":"Midnight Memories","artist":"One Direction","format":"cd","size":"","genre":"Pop","artistType":"band","year":2013,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s099","title":"Four","artist":"One Direction","format":"cd","size":"","genre":"Pop","artistType":"band","year":2014,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s100","title":"Four (Deluxe)","artist":"One Direction","format":"cd","size":"","genre":"Pop","artistType":"band","year":2014,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s101","title":"Made in the A.M.","artist":"One Direction","format":"cd","size":"","genre":"Pop","artistType":"band","year":2015,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s102","title":"Made in the A.M. (Deluxe)","artist":"One Direction","format":"cd","size":"","genre":"Pop","artistType":"band","year":2015,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s103","title":"Flicker","artist":"Niall Horan","format":"cd","size":"","genre":"Pop","artistType":"solo","year":2017,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s104","title":"Songs from the Big Chair","artist":"Tears for Fears","format":"cd","size":"","genre":"Pop, Rock","artistType":"band","year":1985,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s105","title":"The Seeds of Love","artist":"Tears for Fears","format":"cd","size":"","genre":"Pop, Rock","artistType":"band","year":1989,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s106","title":"ICON","artist":"Tears for Fears","format":"cd","size":"","genre":"Pop, Rock, Compilations","artistType":"band","year":1998,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s107","title":"Rule the World","artist":"Tears for Fears","format":"cd","size":"","genre":"Pop, Rock, Compilations","artistType":"band","year":1990,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s108","title":"Greatest Hits (1961-1966)","artist":"The Beatles","format":"cd","size":"","genre":"Rock, Compilations","artistType":"band","year":1966,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s109","title":"West Side Story (1963)","artist":"","format":"cd","size":"","genre":"Musicals, Soundtracks, Compilations","artistType":"","year":1961,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s110","title":"brat","artist":"Charli XCX","format":"cd","size":"","genre":"Pop","artistType":"solo","year":2024,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s111","title":"PAPOTA","artist":"Ca7riel & Paco Amoroso","format":"cd","size":"","genre":"Pop","artistType":"band","year":2024,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s112","title":"Sour","artist":"Olivia Rodrigo","format":"cd","size":"","genre":"Pop","artistType":"solo","year":2021,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s113","title":"Guts","artist":"Olivia Rodrigo","format":"cd","size":"","genre":"Pop, Rock","artistType":"solo","year":2023,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s114","title":"Greatest Hits","artist":"Spice Girls","format":"cd","size":"","genre":"Pop, Compilations","artistType":"band","year":1997,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s115","title":"Mariette","artist":"Airport Impressions","format":"cd","size":"","genre":"Pop","artistType":"band","year":2022,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s116","title":"La La Land","artist":"","format":"cd","size":"","genre":"Musicals, Soundtracks","artistType":"","year":2016,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s117","title":"KPop Demon Hunters Soundtrack","artist":"","format":"cd","size":"","genre":"Pop, Musicals, Soundtracks","artistType":"band,solo","year":2025,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s118","title":"Into the Woods","artist":"","format":"cd","size":"","genre":"Musicals, Soundtracks","artistType":"","year":2014,"dateAdded":"2025-01-04","cover":"","status":"owned"},{"id":"s119","title":"Mamma Mia!","artist":"","format":"cd","size":"","genre":"Pop, Musicals, Soundtracks","artistType":"band","year":2008,"dateAdded":"2025-01-28","cover":"","status":"owned"},{"id":"s120","title":"Breakfast at Tiffany's","artist":"","format":"cd","size":"","genre":"Musicals, Soundtracks","artistType":"band","year":1961,"dateAdded":"2025-01-28","cover":"","status":"owned"},{"id":"s121","title":"Pretty in Pink","artist":"","format":"cd","size":"","genre":"Pop, Rock, Soundtracks, Compilations","artistType":"band,solo","year":1986,"dateAdded":"2025-03-02","cover":"","status":"owned"},{"id":"s122","title":"Ferris Bueller's Day Off","artist":"","format":"cd","size":"","genre":"Pop, Rock, Soundtracks, Compilations","artistType":"band,solo","year":1986,"dateAdded":"2025-08-15","cover":"","status":"owned"},{"id":"s123","title":"Saved by the Girl - 90s","artist":"","format":"cd","size":"","genre":"Pop, Rock, Compilations","artistType":"band,solo","year":1999,"dateAdded":"2025-08-15","cover":"","status":"owned"},{"id":"s124","title":"101 70s Hits","artist":"","format":"cd","size":"","genre":"Pop, Rock, Compilations","artistType":"band,solo","year":1999,"dateAdded":"2025-08-15","cover":"","status":"owned"},{"id":"s125","title":"Rock n' Roll - 50s","artist":"","format":"cd","size":"","genre":"Pop, Rock, Compilations","artistType":"band,solo","year":1999,"dateAdded":"2025-08-15","cover":"","status":"owned"},{"id":"s126","title":"50's Favourites","artist":"","format":"cd","size":"","genre":"Pop, Rock, Compilations","artistType":"band,solo","year":1999,"dateAdded":"2025-08-15","cover":"","status":"owned"},{"id":"s127","title":"Bravo Hits 37","artist":"","format":"cd","size":"","genre":"Pop, Rock, Compilations","artistType":"band,solo","year":1999,"dateAdded":"2025-09-03","cover":"","status":"owned"},{"id":"s128","title":"The Winners - Volume 2","artist":"","format":"cd","size":"","genre":"Pop, Rock, Compilations","artistType":"band,solo","year":1999,"dateAdded":"2025-09-19","cover":"","status":"owned"},{"id":"s129","title":"Greatest Hits","artist":"Queen","format":"cassette","size":"","genre":"Rock, Compilations","artistType":"band","year":1981,"dateAdded":"2024-10-05","cover":"","status":"owned"},{"id":"s130","title":"Back to the Egg","artist":"Wings","format":"cassette","size":"","genre":"Rock","artistType":"band","year":1979,"dateAdded":"2025-08-15","cover":"","status":"owned"},{"id":"s131","title":"Shrek","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2001,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s132","title":"Scooby-Doo: The Movie","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2002,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s133","title":"Barbie in Swan Lake","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2003,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s134","title":"Barbie in the 12 Dancing Princesses","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2006,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s135","title":"Barbie Mariposa","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2008,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s136","title":"Barbie Mariposa and the Fairy Princess","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2013,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s137","title":"Barbie in A Fairy Secret","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2011,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s138","title":"Tinker Bell","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2008,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s139","title":"Tinker Bell and the Lost Treasure","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2009,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s140","title":"Tinker Bell and the Great Fairy Rescue","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2010,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s141","title":"Tinker Bell and the Secret of the Wings","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2012,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s142","title":"Tinker Bell and the Neverbeast","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2014,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s143","title":"Hercules","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":1997,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s144","title":"High School Musical: The Concert","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2007,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s145","title":"High School Musical Remix","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2006,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s146","title":"High School Musical 2 Extended Dance Edition","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2007,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s147","title":"High School Musical 3 Extended Edition","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2008,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s148","title":"16 Wishes","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2010,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s149","title":"Willy Wonka and the Chocolate Factory","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":1971,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s150","title":"The Secret Garden","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":1993,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s151","title":"Mirror Mirror","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2012,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s152","title":"Ella Enchanted","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2004,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s153","title":"Love, Rosie","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2014,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s154","title":"Bring It On","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2000,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s155","title":"The Amazing Spider-Man","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2012,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s156","title":"Hairspray","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2007,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s157","title":"One Direction: Up All Night - The Live Tour","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2012,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s158","title":"One Direction: This Is Us","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2013,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s159","title":"One Direction: The Invasion","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2012,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s160","title":"Sabrina","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":1995,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s161","title":"Mean Girls","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2004,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s162","title":"The House Bunny","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2008,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s163","title":"White Chicks","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2004,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s164","title":"Death Becomes Her","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":1992,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s165","title":"Drop Dead Gorgeous","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":1999,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s166","title":"Lisa Frankenstein","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2024,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s167","title":"The Breakfast Club","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":1985,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s168","title":"Ferris Bueller's Day Off","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":1986,"dateAdded":"2025-02-12","cover":"","status":"owned"},{"id":"s169","title":"Confessions of a Shopaholic","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2009,"dateAdded":"2025-02-28","cover":"","status":"owned"},{"id":"s170","title":"Legally Blonde","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2001,"dateAdded":"2025-02-28","cover":"","status":"owned"},{"id":"s171","title":"Legally Blonde 2","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2003,"dateAdded":"2025-02-28","cover":"","status":"owned"},{"id":"s172","title":"Pitch Perfect","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2012,"dateAdded":"2025-02-28","cover":"","status":"owned"},{"id":"s173","title":"Pitch Perfect 2","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2015,"dateAdded":"2025-02-28","cover":"","status":"owned"},{"id":"s174","title":"Pitch Perfect 3","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2017,"dateAdded":"2025-02-28","cover":"","status":"owned"},{"id":"s175","title":"Bridget Jones's Diary","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2001,"dateAdded":"2025-02-28","cover":"","status":"owned"},{"id":"s176","title":"Bridget Jones: The Edge of Reason","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2004,"dateAdded":"2025-02-28","cover":"","status":"owned"},{"id":"s177","title":"Bridget Jones's Baby","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2016,"dateAdded":"2025-02-28","cover":"","status":"owned"},{"id":"s178","title":"West Side Story (1961)","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":1961,"dateAdded":"2025-08-15","cover":"","status":"owned"},{"id":"s179","title":"West Side Story (2021)","artist":"","format":"dvd","size":"","genre":"Movies","artistType":"","year":2021,"dateAdded":"2025-08-15","cover":"","status":"owned"}];
+const SEED_MEMOS=[{id:'m-welcome',date:'2025-01-01 12:00',text:"This is like, where I write about my record collection and so on. I'm just a girl ୨୧"}];
+const fmtD=d=>new Date(d+'T12:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+const typeLabel=t=>({band:'Band',solo:'Solo','band,solo':'Band / Solo'})[t]||'';
+
+/* ---------- data layer ---------- */
+const sv=()=>{try{localStorage.setItem('mc',JSON.stringify(S))}catch(e){}};
+const fail=e=>alert('Could not save: '+(e.code||e.message)+'\nAre you logged in as the owner, and are the Firestore rules published?');
+async function put(c,o){try{if(demo){const a=S[c],i=a.findIndex(x=>x.id==o.id);i<0?a.push(o):a[i]=o;sv();render()}else await setDoc(doc(db,c,o.id),o)}catch(e){fail(e)}}
+async function del(c,id){try{if(demo){S[c]=S[c].filter(x=>x.id!=id);sv();render()}else await deleteDoc(doc(db,c,id))}catch(e){fail(e)}}
+async function many(c,list){try{if(demo){S[c].push(...list);sv();render()}else for(let i=0;i<list.length;i+=400){const b=writeBatch(db);list.slice(i,i+400).forEach(o=>b.set(doc(db,c,o.id),o));await b.commit()}}catch(e){fail(e)}}
+if(demo){try{Object.assign(S,JSON.parse(localStorage.getItem('mc'))||{})}catch(e){}
+  if(!S.items.length&&!localStorage.getItem('mcSeed')){S.items=SEED.map(x=>({...x}));S.memos=SEED_MEMOS.map(x=>({...x}));sv();try{localStorage.setItem('mcSeed','1')}catch(e){}}setTimeout(()=>{ready=true;render()},700)}
+else{
+  const app=initializeApp(CFG);db=getFirestore(app);auth=getAuth(app);
+  onSnapshot(collection(db,'items'),s=>{S.items=s.docs.map(d=>d.data());ready=true;render()});
+  onSnapshot(collection(db,'memos'),s=>{S.memos=s.docs.map(d=>d.data());render()});
+  onAuthStateChanged(auth,u=>{owner=!!u&&u.email===OWNER_EMAIL;render()});
+}
+
+/* ---------- helpers ---------- */
+const decOf=y=>!y||y<1950?'':y>=2000?'2000':String(Math.floor(y/10)*10);
+const decLabel=d=>d==='2000'?'2000s-Now':d+'s';
+const owned=()=>S.items.filter(i=>i.status!=='wishlist');
+const count=l=>({vinyl:l.filter(i=>i.format=='vinyl').length,cd:l.filter(i=>i.format=='cd').length,dvd:l.filter(i=>i.format=='dvd').length,cassette:l.filter(i=>i.format=='cassette').length,total:l.length});
+const genres=()=>{const m=new Map();[...DEF_GENRES,...S.items.flatMap(i=>(i.genre||'').split(','))].forEach(g=>{g=(g||'').trim();if(g&&!m.has(g.toLowerCase()))m.set(g.toLowerCase(),g)});return [...m]};
+function match(i,st){
+  if((i.status==='wishlist')!==(st==='wishlist'))return false;
+  if(F.fmt=='v12'&&!(i.format=='vinyl'&&i.size=='12'))return false;
+  if(F.fmt=='v7'&&!(i.format=='vinyl'&&i.size=='7'))return false;
+  if(['vinyl','cd','dvd','cassette'].includes(F.fmt)&&i.format!==F.fmt)return false;
+  if(F.genre!=='all'&&!(i.genre||'').toLowerCase().split(',').map(x=>x.trim()).includes(F.genre))return false;
+  if(F.at!=='all'&&!(i.artistType||'').split(',').includes(F.at))return false;
+  if(F.dec!=='all'&&decOf(i.year)!==F.dec)return false;
+  const q=F.q.toLowerCase();return !q||(i.title+' '+i.artist).toLowerCase().includes(q);
+}
+const normDate=s=>{s=(s||'').trim();let m;if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;if(m=s.match(/^(\d{1,2})[\/.](\d{1,2})[\/.](\d{4})$/))return `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;return today()};
+function splitCsv(l){const r=[];let c='',q=false;for(let i=0;i<l.length;i++){const ch=l[i];if(ch=='"'){if(q&&l[i+1]=='"'){c+='"';i++}else q=!q}else if(ch==','&&!q){r.push(c);c=''}else c+=ch}r.push(c);return r.map(x=>x.trim())}
+function parseLines(text,status){
+  return text.split(/\r?\n/).filter(l=>l.trim()).map(l=>{
+    const c=l.includes('\t')?l.split('\t'):(l.match(/\|/g)||[]).length>=3?l.split('|'):splitCsv(l);
+    const t=c.map(x=>x.trim());if(t[0].toLowerCase()==='title')return null;
+    const f=(t[2]||'').toLowerCase();let format=/dvd/.test(f)?'dvd':/cass|tape/.test(f)?'cassette':/\bcd\b|compact/.test(f)?'cd':/vinyl|lp|record|45|12|7/.test(f)?'vinyl':'';
+    let size='';if(format==='vinyl')size=/7/.test((t[3]||'')+f)?'7':'12';
+    const y=parseInt(t[6]);
+    const st=/wish/i.test(t[9]||'')?'wishlist':/own/i.test(t[9]||'')?'owned':status;
+    return {id:uid(),title:t[0],artist:t[1]||'',format,size,genre:t[4]||'Other',artistType:/band/i.test(t[5]||'')&&/solo/i.test(t[5]||'')?'band,solo':/solo/i.test(t[5]||'')?'solo':'band',year:y>0?y:0,dateAdded:normDate(t[7]),cover:t[8]||'',status:st,ok:!!(t[0]&&format)};
+  }).filter(Boolean);
+}
+
+/* ---------- rendering ---------- */
+function render(){
+  $('#tabs').innerHTML=[['home','Home'],['cat','Catalog'],['wish','Wishlist'],['memos','Memos']].map(([k,l])=>`<button class="${tab==k?'on':''}" data-tab="${k}">${l}</button>`).join('');
+  $('#bLog').textContent=owner?'Log Out':'Owner Login';
+  $('#home').hidden=tab!=='home';$('#cat').hidden=!(tab=='cat'||tab=='wish');$('#memos').hidden=tab!=='memos';
+  if(tab=='home')renderHome();
+  if(tab=='cat'||tab=='wish'){renderChips();renderList()}
+  if(tab=='memos')renderMemos();
+}
+function renderHome(){
+  const c=count(owned()),max=Math.max(1,...Object.values(c).slice(0,4));
+  const dates=[...new Set(owned().map(i=>i.dateAdded||'').filter(Boolean))].sort();
+  const rows=dates.map(d=>({d,...count(owned().filter(i=>i.dateAdded&&i.dateAdded<=d))})).reverse();
+  $('#home').innerHTML=`<h1 class="hero">Welcome to my collection</h1>
+  <div>Vinyl, CDs, DVDs and cassettes. Browse, search and filter in the Catalog tab.</div>
+  ${ready?'':'<div class="seg load" title="Loading"><i></i></div><div>Loading collection...</div>'}
+  ${ready&&!S.items.length?`<div class="note"><h4>Your catalog is empty</h4>${owner?`<button data-act="seed">Load my Vinyl Log collection (${SEED.length} items)</button>`:'Owner: log in, then load your collection from here.'}</div>`:''}
+  <div class="stats">${[['vinyl','Vinyl Records'],['cd','CDs'],['dvd','DVDs'],['cassette','Cassettes']].map(([k,l])=>`<div><div class="lcd">${c[k]}<small>${l}</small></div><div class="seg"><i style="width:${c[k]/max*100}%"></i></div></div>`).join('')}</div>
+  <h3>Collection growth log</h3>
+  <div class="tw"><table><tr><th>Date</th><th>Vinyl</th><th>CDs</th><th>DVDs</th><th>Cassettes</th><th>Total</th></tr>
+  ${(logAll?rows:rows.slice(0,8)).map(r=>`<tr><td>${fmtD(r.d)}</td><td>${r.vinyl}</td><td>${r.cd}</td><td>${r.dvd}</td><td>${r.cassette}</td><td><b>${r.total}</b></td></tr>`).join('')||'<tr><td colspan="6" class="empty">No items yet. Log in as the owner and use + Add Media.</td></tr>'}</table></div>${rows.length>8?`<p><button data-act="logall">${logAll?'Show recent only':'Show all '+rows.length+' dates'}</button></p>`:''}`;
+}
+function renderChips(){
+  const nf=['fmt','genre','at','dec'].filter(k=>F[k]!=='all').length;$('#ftb').textContent='Filters'+(nf?` (${nf})`:'');
+  const chip=(g,v,l)=>`<button class="${F[g]==v?'on':''}" data-f="${g}" data-v="${esc(v)}">${esc(l)}</button>`;
+  const row=(t,a)=>`<div class="fr"><em>${t}</em>${a}</div>`;
+  $('#chips').innerHTML=
+    row('Type:',[['all','All'],['vinyl','Vinyl (All Records)'],['v12','12-inch'],['v7','7-inch'],['cd','CDs'],['cassette','Cassettes'],['dvd','DVDs']].map(a=>chip('fmt',...a)).join(''))+
+    row('Genre:',chip('genre','all','All')+genres().map(([k,l])=>chip('genre',k,l)).join('')+(owner?'<button data-act="gen">+ Genre</button>':''))+
+    row('Artist:',[['all','All'],['band','Bands'],['solo','Solo Artists']].map(a=>chip('at',...a)).join(''))+
+    row('Decade:',chip('dec','all','All')+['1950','1960','1970','1980','1990','2000'].map(d=>chip('dec',d,decLabel(d))).join(''));
+}
+const card=(i,st)=>`<div class="card"><div class="cv ${i.format}"><span>${ICON[i.format]}</span>${/^https?:\/\//.test(i.cover||'')?`<img loading="lazy" alt="" src="${esc(i.cover)}" onerror="this.remove()">`:''}</div>
+  <b>${esc(i.title)}</b><span>${esc(i.artist)}</span><small>${FM[i.format]}${i.size?' '+i.size+'"':''}, ${esc(i.genre)}, ${i.year||'year n/a'}<br>${typeLabel(i.artistType)}</small>
+  ${owner?`<div class="acts">${st=='wishlist'?`<button data-act="mv" data-id="${i.id}">Move to Collection</button>`:''}<button data-act="ed" data-id="${i.id}">Edit</button><button data-act="rm" data-id="${i.id}">Delete</button></div>`:''}</div>`;
+function renderList(){
+  const st=tab=='wish'?'wishlist':'owned';
+  const l=S.items.filter(i=>match(i,st)).sort((a,b)=>(a.artist+a.title).localeCompare(b.artist+b.title));
+  $('#list').innerHTML=`<div style="margin-bottom:6px">${l.length} item${l.length==1?'':'s'} ${st=='wishlist'?'on the wishlist':'in the collection'}</div>`+(l.length?`<div class="grid">${l.map(i=>card(i,st)).join('')}</div>`:'<div class="empty">Nothing matches these filters.</div>');
+}
+function renderMemos(){
+  $('#memos').innerHTML=`<div class="tb" style="background:#000080"><b>Memos.txt - Notepad</b></div><div style="background:#c0c0c0;padding:2px 6px">File &nbsp; Edit &nbsp; Search &nbsp; Help</div>
+  ${owner?`<div class="pad"><textarea id="mt" rows="4" placeholder="Write a note..."></textarea><button data-act="memo">Save memo</button></div>`:''}
+  ${[...S.memos].sort((a,b)=>b.date.localeCompare(a.date)).map(m=>`<div class="note"><h4>${esc(m.date)}</h4>${esc(m.text)}${owner?`<div><button data-act="rmm" data-id="${m.id}">Delete</button></div>`:''}</div>`).join('')||'<div class="empty">No memos yet.</div>'}`;
+}
+
+/* ---------- dialogs ---------- */
+function modal(title,html){$('#modal').innerHTML=`<div class="win"><div class="tb"><b>${title}</b><span><button data-act="close">X</button></span></div>${html}</div>`;$('#modal').style.display='flex'}
+const close=()=>{$('#modal').style.display='none';$('#modal').innerHTML=''};
+const needOwner=()=>{if(owner)return true;login();return false};
+function login(){
+  if(owner){if(demo){owner=false;render()}else signOut(auth);return}
+  if(demo){owner=true;render();alert('Demo mode: Firebase is not configured yet, so data is saved only in this browser. See the setup steps.');return}
+  modal('Owner Login',`<div class="form"><label>Email:</label><input id="le" type="email" autocomplete="username"><label>Password:</label><input id="lp" type="password" autocomplete="current-password"><span></span><span><button data-act="dologin">OK</button> <button data-act="close">Cancel</button></span></div>`);
+}
+const opt=(a,v)=>a.map(([k,l])=>`<option value="${k}" ${k==v?'selected':''}>${l}</option>`).join('');
+function openAdd(it,mode){
+  if(!needOwner())return;const e=it||{};
+  modal(it?'Edit Media':'Add Media',`${it?'':`<div class="tabs"><button data-act="m1" class="${mode!='bulk'?'on':''}">Single Entry</button><button data-act="m2" class="${mode=='bulk'?'on':''}">Bulk Add</button></div>`}
+  ${mode=='bulk'?`<div class="pad"><div>One item per line, separated by | or tabs or commas:<br><code>Title | Artist | Format | Size | Genre | Artist Type | Year | Date Added</code><br>Format: Vinyl, CD, DVD or Cassette. Size: 12 or 7 (vinyl only). Artist Type: Band or Solo. Optional 9th column: cover URL, 10th: owned or wishlist.</div>
+   <textarea id="bt" rows="8" placeholder="Rumours | Fleetwood Mac | Vinyl | 12 | Rock | Band | 1977 | 2026-11-26"></textarea>
+   <div class="bar"><select id="bs"><option value="owned">Add as Owned</option><option value="wishlist">Add as Wishlist</option></select><button data-act="prev">Preview</button><button data-act="sample">Insert example</button></div><div id="pv" class="tw"></div></div>`
+  :`<div class="form"><label>Title:</label><input id="f_title" value="${esc(e.title)}"><label>Artist:</label><input id="f_artist" value="${esc(e.artist)}">
+   <label>Format:</label><select id="f_format">${opt(Object.entries(FM),e.format||'vinyl')}</select>
+   <label id="szl">Vinyl size:</label><select id="f_size">${opt([['12','12"'],['7','7"']],e.size||'12')}</select>
+   <label>Genre:</label><input id="f_genre" list="gl" placeholder="Pop, Rock (comma separated)" value="${esc(e.genre)}"><datalist id="gl">${genres().map(g=>`<option value="${esc(g[1])}">`).join('')}</datalist>
+   <label>Artist type:</label><select id="f_at">${opt([['band','Band'],['solo','Solo Artist'],['band,solo','Band / Solo'],['','n/a']],e.artistType||'band')}</select>
+   <label>Release year:</label><input id="f_year" type="number" min="1900" max="2100" value="${e.year||''}">
+   <label>Date added:</label><input id="f_date" type="date" value="${e.dateAdded||today()}">
+   <label>Cover image URL:</label><input id="f_cover" type="url" placeholder="https://..." value="${esc(e.cover)}">
+   <label>Status:</label><select id="f_st">${opt([['owned','Owned'],['wishlist','Wishlist']],e.status||(tab=='wish'?'wishlist':'owned'))}</select>
+   <span></span><span><button data-act="save" data-id="${e.id||''}">${it?'Save changes':'Add item'}</button> <button data-act="close">Cancel</button></span></div>`}`);
+  sizeToggle();
+}
+function sizeToggle(){const f=$('#f_format');if(!f)return;const v=f.value=='vinyl';$('#f_size').style.display=$('#szl').style.display=v?'':'none'}
+function prev(){
+  pending=parseLines($('#bt').value,$('#bs').value);const ok=pending.filter(p=>p.ok);
+  $('#pv').innerHTML=pending.length?`<table><tr><th>Title</th><th>Artist</th><th>Format</th><th>Genre</th><th>Year</th><th>Date</th><th>Status</th></tr>${pending.map(p=>`<tr class="${p.ok?'':'bad'}"><td>${esc(p.title)}</td><td>${esc(p.artist)}</td><td>${p.format?FM[p.format]+(p.size?' '+p.size+'"':''):'?'}</td><td>${esc(p.genre)}</td><td>${p.year||''}</td><td>${p.dateAdded}</td><td>${p.status}</td></tr>`).join('')}</table>
+  <p>${ok.length} ready${pending.length-ok.length?`, ${pending.length-ok.length} skipped (missing title or unknown format)`:''}.</p><button data-act="bulk" ${ok.length?'':'disabled'}>Add ${ok.length} items</button>`:'<p>Nothing to preview. Paste some lines first.</p>';
+}
+function download(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click()}
+const csvq=v=>`"${String(v??'').replace(/"/g,'""')}"`;
+
+/* ---------- events ---------- */
+document.addEventListener('click',async ev=>{
+  const b=ev.target.closest('button');if(!b)return;
+  const d=b.dataset,id=d.id;
+  if(d.tab){tab=d.tab;F.fmt=F.genre=F.at=F.dec='all';render();return}
+  if(d.f){F[d.f]=d.v.toLowerCase()==d.v||d.f!=='genre'?d.v:d.v;renderChips();renderList();return}
+  switch(d.act){
+    case'close':close();break;
+    case'seed':await many('items',SEED);if(!S.memos.length)await many('memos',SEED_MEMOS);break;
+    case'logall':logAll=!logAll;renderHome();break;
+    case'ft':$('#chips').classList.toggle('open');break;
+    case'add':openAdd(null);break;
+    case'login':login();break;
+    case'dologin':try{await signInWithEmailAndPassword(auth,$('#le').value,$('#lp').value);close()}catch(e){alert('Login failed: '+(e.code||e.message))}break;
+    case'm1':openAdd(null,'single');break;
+    case'm2':openAdd(null,'bulk');break;
+    case'save':{
+      const g=k=>$('#f_'+k).value.trim(),fmt=g('format');
+      if(!g('title'))return alert('Title is required.');
+      await put('items',{id:id||uid(),title:g('title'),artist:g('artist'),format:fmt,size:fmt=='vinyl'?g('size'):'',genre:g('genre')||'Other',artistType:g('at'),year:parseInt(g('year'))||0,dateAdded:g('date')||today(),cover:g('cover'),status:g('st')});close();break}
+    case'prev':prev();break;
+    case'sample':$('#bt').value='Rumours | Fleetwood Mac | Vinyl | 12 | Rock | Band | 1977 | '+today()+'\nHey Jude | The Beatles | Vinyl | 7 | Rock | Band | 1968 | '+today()+'\nThriller | Michael Jackson | CD | | Pop | Solo | 1982 | '+today()+'\nTitanic OST | James Horner | Cassette | | Soundtracks | Solo | 1997 | '+today();break;
+    case'bulk':{const ok=pending.filter(p=>p.ok).map(({ok,...r})=>r);await many('items',ok);close();alert(ok.length+' items added.');break}
+    case'ed':openAdd(S.items.find(i=>i.id==id));break;
+    case'rm':if(needOwner()&&confirm('Delete this item?'))del('items',id);break;
+    case'mv':{const i=S.items.find(x=>x.id==id);put('items',{...i,status:'owned',dateAdded:today()});break}
+    case'gen':{const g=prompt('New genre name:');if(g&&g.trim()){openAdd(null);$('#f_genre').value=g.trim()}break}
+    case'memo':{const t=$('#mt').value.trim();if(t)put('memos',{id:uid(),text:t,date:new Date().toISOString().slice(0,16).replace('T',' ')});break}
+    case'rmm':if(confirm('Delete this memo?'))del('memos',id);break;
+    case'xj':download('media-catalog-'+today()+'.json',JSON.stringify({items:S.items,memos:S.memos},null,2),'application/json');break;
+    case'xc':download('media-catalog-'+today()+'.csv',['Title,Artist,Format,Size,Genre,ArtistType,Year,DateAdded,Cover,Status',...S.items.map(i=>[i.title,i.artist,FM[i.format],i.size,i.genre,i.artistType,i.year,i.dateAdded,i.cover,i.status].map(csvq).join(','))].join('\n'),'text/csv');break;
+    case'imp':if(needOwner())$('#file').click();break;
+  }
+});
+document.addEventListener('change',ev=>{if(ev.target.id=='f_format')sizeToggle()});
+$('#q').addEventListener('input',e=>{F.q=e.target.value;renderList()});
+$('#file').addEventListener('change',async e=>{
+  const f=e.target.files[0];e.target.value='';if(!f)return;const t=await f.text();
+  try{
+    if(f.name.endsWith('.json')){const j=JSON.parse(t),it=(Array.isArray(j)?j:j.items||[]).map(x=>({...x,id:x.id||uid()})),me=(j.memos||[]).map(x=>({...x,id:x.id||uid()}));
+      if(!confirm(`Import ${it.length} items and ${me.length} memos? Matching IDs are overwritten.`))return;await many('items',it);if(me.length)await many('memos',me)}
+    else{const it=parseLines(t,'owned').filter(p=>p.ok).map(({ok,...r})=>r);if(!confirm(`Import ${it.length} items from this file?`))return;await many('items',it)}
+    alert('Import finished.');
+  }catch(err){alert('Import failed: '+err.message)}
+});
+/* ---------- install as app (PWA) ---------- */
+let dip;
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();dip=e;$('#inst').style.display=''});
+addEventListener('appinstalled',()=>{$('#inst').style.display='none'});
+const ios=/iphone|ipad|ipod/i.test(navigator.userAgent),standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+if(ios&&!standalone)$('#inst').style.display='';
+document.addEventListener('click',async ev=>{
+  if(!ev.target.closest('[data-act=install]'))return;
+  if(dip){dip.prompt();await dip.userChoice;dip=null;$('#inst').style.display='none'}
+  else alert(ios?'On iPhone/iPad: tap the Share button in Safari, then "Add to Home Screen".':'Open your browser menu and choose "Install app" or "Add to Home screen".');
+});
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+const clk=()=>$('#clk').textContent=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});clk();setInterval(clk,30000);
+render();
+</script>
+</body>
+</html>
